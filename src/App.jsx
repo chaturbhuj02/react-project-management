@@ -5,7 +5,7 @@ import { useState } from "react";
 
 function App() {
   const [showNewProject, setShowNewProject] = useState({
-    projects:{},
+    projects:[],
     projectId:undefined,
   });
 
@@ -15,10 +15,23 @@ function App() {
       projectId: null,
     }));
   }
+
+  function handleAddProject(newProject) {
+    setShowNewProject((prev) => ({
+      ...prev,
+      projects: [
+        ...prev.projects,
+        { id: Math.random(), ...newProject }
+      ],
+      projectId:undefined,
+    }));
+    console.log(showNewProject.projects);
+  }
+
   return (
     <div className="h-screen my-8 flex gap-8">
       <ProjectsSideBar />
-      {showNewProject.projectId === null ? <NewProject /> : <NoProjectSelected handleShowNewProject={handleShowNewProject} />}
+      {showNewProject.projectId === null ? <NewProject onAdd={handleAddProject} /> : <NoProjectSelected handleShowNewProject={handleShowNewProject} />}
     </div>
   );
 }

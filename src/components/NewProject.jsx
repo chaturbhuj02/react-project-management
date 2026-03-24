@@ -1,18 +1,20 @@
 import Input from "./Input";
 import { useRef } from "react";
 
-function NewProject () {
+function NewProject ({onAdd}) {
   const title = useRef();
   const description = useRef();
   const dueDate = useRef();
 
-  function handleSubmit() {
+  function handleSubmit(event) {
+    event.preventDefault();
     const newProject = {
       title: title.current.value,
       description: description.current.value,
       dueDate: dueDate.current.value
-    }
-    console.log(newProject);
+    };
+
+    onAdd(newProject);
   }
 
   return (
@@ -22,9 +24,9 @@ function NewProject () {
       <li><button className="px-6 py-2 rounded-md text-stone-50 bg-stone-800 hover:bg-stone-950" onClick={handleSubmit}>Save</button></li>   
     </menu> 
     <div>
-        <Input ref={title} label="Title" />
+        <Input type="text" ref={title} label="Title" />
         <Input ref={description} textarea label="Description" />
-        <Input ref={dueDate} label="Due Date" />
+        <Input type="date" ref={dueDate} label="Due Date" />
     </div>
     </div>
   )

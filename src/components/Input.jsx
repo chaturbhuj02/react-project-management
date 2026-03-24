@@ -1,4 +1,4 @@
-function Input({ label, textarea, ref }) {
+function Input({ label, textarea, ref, type }) {
   return (
     <div className="flex flex-col gap-1 my-4">
       <label className="text-sm font-bold uppercase text-stone-500">
@@ -12,7 +12,7 @@ function Input({ label, textarea, ref }) {
       ) : (
         <input
           ref={ref}
-          type="text"
+          type={type}
           className="w-full p-1 border border-stone-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       )}
