@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className="h-screen my-8 flex gap-8">
-      <ProjectsSideBar />
+      <ProjectsSideBar onStartAddProject={handleShowNewProject} projects={showNewProject.projects} />
       {showNewProject.projectId === null ? <NewProject onAdd={handleAddProject} /> : <NoProjectSelected handleShowNewProject={handleShowNewProject} />}
     </div>
   );
