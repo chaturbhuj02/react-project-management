@@ -16,6 +16,13 @@ function App() {
     }));
   }
 
+  function handleCancelNewProject() {
+    setShowNewProject((prev) => ({
+      ...prev,
+      projectId: undefined,
+    }));
+  }
+
   function handleAddProject(newProject) {
     setShowNewProject((prev) => ({
       ...prev,
@@ -30,8 +37,8 @@ function App() {
 
   return (
     <div className="h-screen my-8 flex gap-8">
-      <ProjectsSideBar onStartAddProject={handleShowNewProject} projects={showNewProject.projects} />
-      {showNewProject.projectId === null ? <NewProject onAdd={handleAddProject} /> : <NoProjectSelected handleShowNewProject={handleShowNewProject} />}
+      <ProjectsSideBar onStartAddProject={handleShowNewProject}  projects={showNewProject.projects} />
+      {showNewProject.projectId === null ? <NewProject onAdd={handleAddProject} onCancel={handleCancelNewProject} /> : <NoProjectSelected handleShowNewProject={handleShowNewProject} />}
     </div>
   );
 }
