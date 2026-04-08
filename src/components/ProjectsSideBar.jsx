@@ -1,4 +1,4 @@
-function ProjectsSideBar({ onStartAddProject, projects }) {
+function ProjectsSideBar({ onStartAddProject, onSelectProject, projects }) {
   return (
     <div className="w-1/3 px-8 py-16 bg-stone-900 text-stone-50 md:w-72 rounded-r-xl">
       <h2 className="md:text-xl font-bold mb-8 uppercase text-stone-200">
@@ -15,7 +15,9 @@ function ProjectsSideBar({ onStartAddProject, projects }) {
       <ul className="mt-8">
         {projects.map((project) => (
           <li key={project.id}>
-            <button className="w-full py-1 px-2 my-1 rounded-md text-stone-400 hover:bg-stone-800">{project.title}</button>
+            <button className="w-full py-1 px-2 my-1 rounded-md text-stone-400 hover:bg-stone-800" onClick={() => onSelectProject(project.id)}>
+              {project.title}
+            </button>
           </li>
         ))}
       </ul>
