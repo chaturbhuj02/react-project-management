@@ -3,12 +3,15 @@ import NewProject from "./components/NewProject";
 import NoProjectSelected from "./components/NoProjectSelected";
 import SelectedProject from "./components/SelectedProject";
 
-import { useState } from "react";
+import { createContext, useState } from "react";
+
+const TaskContext = createContext();
 
 function App() {
   const [showNewProject, setShowNewProject] = useState({
     projects: [],
     projectId: undefined,
+    tasks: [],
   });
 
   function handleShowNewProject() {
@@ -49,13 +52,62 @@ function App() {
     }));
   }
 
+  function handleAddTask(newTask) {
+    console.log(newTask);
+    setShowNewProject((prev) => {
+      const updatedProjects = prev.projects.map((project) => {
+        if (project.id === prev.projectId) {
+          return {
+            ...project,
+            tasks: [
+              ...(project.tasks || []),
+              { id: Math.random(), ...newTask },
+            ],
+          };
+        }
+        return project;
+      });
+      return {
+        ...prev,
+        projects: updatedProjects,
+      };
+    });
+  }
+
+  function handleDeleteTask(taskId) {
+    setShowNewProject((prev) => {
+      const updatedProjects = prev.projects.map((project) => {
+        if (project.id === prev.projectId) {
+          return {
+            ...project,
+            tasks: project.tasks.filter((task) => task.id !== taskId),
+          };
+        }
+        return project;
+      });
+      return {
+        ...prev,
+        projects: updatedProjects,
+      };
+    });
+  }
+
   const selectedProject = showNewProject.projects.find(
     (project) => project.id === showNewProject.projectId,
   );
 
-  let content = <SelectedProject project={selectedProject} onDelete={handleDeleteProject} />;
+  let content = (
+    <TaskContext.Provider value={{ handleAddTask, handleDeleteTask }}>
+      <SelectedProject
+        project={selectedProject}
+        onDelete={handleDeleteProject}
+      />
+    </TaskContext.Provider>
+  );
   if (showNewProject.projectId === null) {
-    content = <NewProject onAdd={handleAddProject} onCancel={handleCancelNewProject} />;
+    content = (
+      <NewProject onAdd={handleAddProject} onCancel={handleCancelNewProject} />
+    );
   } else if (showNewProject.projectId === undefined) {
     content = <NoProjectSelected handleShowNewProject={handleShowNewProject} />;
   }
@@ -73,3 +125,4 @@ function App() {
 }
 
 export default App;
+export { TaskContext };
