@@ -48,58 +48,38 @@ function App() {
     setShowNewProject((prev) => ({
       ...prev,
       projects: prev.projects.filter((project) => project.id !== projectId),
+      tasks: prev.tasks.filter((task) => task.projectId !== projectId),
       projectId: undefined,
     }));
   }
 
   function handleAddTask(newTask) {
-    console.log(newTask);
-    setShowNewProject((prev) => {
-      const updatedProjects = prev.projects.map((project) => {
-        if (project.id === prev.projectId) {
-          return {
-            ...project,
-            tasks: [
-              ...(project.tasks || []),
-              { id: Math.random(), ...newTask },
-            ],
-          };
-        }
-        return project;
-      });
-      return {
-        ...prev,
-        projects: updatedProjects,
-      };
-    });
+    setShowNewProject((prev) => ({
+      ...prev,
+      tasks: [{ id: Math.random(), projectId: prev.projectId, ...newTask }, ...prev.tasks],
+    }));
   }
 
   function handleDeleteTask(taskId) {
-    setShowNewProject((prev) => {
-      const updatedProjects = prev.projects.map((project) => {
-        if (project.id === prev.projectId) {
-          return {
-            ...project,
-            tasks: project.tasks.filter((task) => task.id !== taskId),
-          };
-        }
-        return project;
-      });
-      return {
-        ...prev,
-        projects: updatedProjects,
-      };
-    });
+    setShowNewProject((prev) => ({
+      ...prev,
+      tasks: prev.tasks.filter((task) => task.id !== taskId),
+    }));
   }
 
   const selectedProject = showNewProject.projects.find(
     (project) => project.id === showNewProject.projectId,
   );
 
+  const selectedProjectTasks = showNewProject.tasks.filter(
+    (task) => task.projectId === showNewProject.projectId
+  );
+
   let content = (
     <TaskContext.Provider value={{ handleAddTask, handleDeleteTask }}>
       <SelectedProject
         project={selectedProject}
+        tasks={selectedProjectTasks}
         onDelete={handleDeleteProject}
       />
     </TaskContext.Provider>

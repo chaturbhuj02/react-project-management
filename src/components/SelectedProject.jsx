@@ -1,7 +1,7 @@
 import React from "react";
 import Tasks from "./Tasks";
 
-const SelectedProject = ({ project, onDelete }) => {
+const SelectedProject = ({ project, onDelete, tasks }) => {
   const formattedDate = new Date(project.dueDate).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -18,7 +18,7 @@ const SelectedProject = ({ project, onDelete }) => {
         <p className="mb-4 text-stone-400">{formattedDate}</p>
         <p className="text-stone-800 whitespace-pre-wrap">{project.description}</p>
       </header>
-      <Tasks />
+      <Tasks tasks={tasks} />
     </div>
   );
 };
